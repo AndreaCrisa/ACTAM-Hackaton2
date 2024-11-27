@@ -109,6 +109,8 @@ function stopCode() {
         drumPatternIntro.stop(0);
         bassLine.stop(0)
         arpSequence.stop(0); // Stop the arpeggio sequence
+        mainRiffH.stop(0);
+        mainRiffL.stop(0);
 
         kick.stop();
         snare.stop();
