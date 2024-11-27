@@ -19,6 +19,19 @@ const drumPatternIntro = new Tone.Sequence((time, note) => {
     }
 }, ["kick", "ClosedHiHat", "snare", "ClosedHiHat"], "8n");
 
+const drumPatternFinal = new Tone.Sequence((time, note) => {
+    if (note === "kick") {
+        kick.start(time);
+    } else if (note === "ClosedHiHat") {
+        OpenHiHat.start(time);
+    } else if (note === "snare") {
+        snare.start(time);
+        kick.start(time);
+        CLAP.start(time);
+    }
+}, ["kick", "ClosedHiHat", "snare", "ClosedHiHat"], "8n");
+
+
 // Create a bassline synth
 const bassSynth = new Tone.AMSynth().toDestination();
 bassSynth.set({
@@ -41,8 +54,6 @@ bassSynth.connect(compressor);
 const bassLine = new Tone.Sequence((time, note) => {
     bassSynth.triggerAttackRelease(note, "8n", time);
 }, ["G2", "F2", "Eb2", "Eb2", "Eb2", "F2", "C2", "C2", "C2", "D2", "Eb2", "Eb2", "Eb2", "F2", "G2", "G2"], "4n");
-
-
 
 // Arpeggio array
 const arp = [
@@ -92,12 +103,24 @@ const mainRiffH = new Tone.Sequence((time, note) => {
 
 document.getElementById("playButton").addEventListener("click", () => {
     Tone.start();
+
     drumPatternIntro.start(0);
-    bassLine.start(0);
-    arpSequence.start(0); // Start the arpeggio sequence
-    //mainRiffSequence.start(0);
-    mainRiffH.start(0);
-    mainRiffL.start(0);
+
+    arpSequence.start("2m");
+
+    mainRiffH.start("4m");
+    mainRiffL.start("4m");
+
+    bassLine.start("8m");
+    drumPatternIntro.stop("8m");
+    arpSequence.stop("8m");
+
+    drumPatternIntro.start("12m");
+
+    drumPatternIntro.stop("16m");
+    drumPatternFinal.start("16m");
+    arpSequence.start("16m");
+
     Tone.Transport.start()
 });
 
