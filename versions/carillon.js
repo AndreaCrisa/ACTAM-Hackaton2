@@ -106,20 +106,20 @@ document.getElementById("playButton").addEventListener("click", () => {
 
     drumPatternIntro.start(0);
 
-    arpSequence.start("2m");
+    arpSequence.start("4m");
 
-    mainRiffH.start("4m");
-    mainRiffL.start("4m");
+    mainRiffH.start("8m");
+    mainRiffL.start("8m");
 
-    bassLine.start("8m");
-    drumPatternIntro.stop("8m");
-    arpSequence.stop("8m");
-
-    drumPatternIntro.start("12m");
-
+    bassLine.start("16m");
     drumPatternIntro.stop("16m");
-    drumPatternFinal.start("16m");
-    arpSequence.start("16m");
+    arpSequence.stop("16m");
+
+    drumPatternIntro.start("24m");
+
+    drumPatternIntro.stop("32m");
+    drumPatternFinal.start("32m");
+    arpSequence.start("32m");
 
     Tone.Transport.start()
 });
