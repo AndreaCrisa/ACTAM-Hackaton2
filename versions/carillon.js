@@ -81,32 +81,13 @@ const arpSequence = playArpeggio(arp, "16n");
 // Creazione di un sintetizzatore per l'arpeggio
 const mainRiffSynth = new Tone.PolySynth(Tone.Synth).toDestination();
 
-mainRiffSynth.set({
-    oscillator: {
-        type: "sawtooth" // Change oscillator type to sawtooth
-    }
-});
+const mainRiffL = new Tone.Sequence((time, note) => {
+    mainRiffSynth.triggerAttackRelease(note, "16n", time);
+}, ["G4", null, "G4", null, "F4", null, "F4", null, "D4", "D4", null, "D4", null, "D4", null, null], "16n");
 
-// Sequenza dell'arpeggio con pause
-const mainRiffSequence = new Tone.Sequence((time, chord) => {
-    if (chord) {
-        mainRiffSynth.triggerAttackRelease(chord, time); // Suona l'accordo con una durata di 16esima
-    }
-}, [
-    ["G4", "Bb4"], "16n",  // G5, Bb5 (16n)
-    null, "16n",            // Pausa di 16n
-    ["G4", "Bb4"], "16n",  // G5, Bb5 (16n)
-    null, "16n",            // Pausa di 16n
-    ["F4", "A4"], "16n",   // F5, A5 (16n)
-    null, "16n",            // Pausa di 16n
-    ["F4", "A4"], "16n",   // F5, A5 (16n)
-    null, "16n",            // Pausa di 16n
-    ["D4", "G4"], "8n",    // D5, G5 (8n)
-    null, "16n",            // Pausa di 16n
-    ["D4", "G4"], "16n",   // D5, G5 (16n)
-    null, "16n",            // Pausa di 16n
-    ["D4", "G4"], "8n"     // D5, G5 (8n)
-], "16n");  // La durata è impostata per ogni step come "16n" (sedicesima)
+const mainRiffH = new Tone.Sequence((time, note) => {
+    mainRiffSynth.triggerAttackRelease(note, "16n", time);
+}, ["Bb4", null, "Bb4", null, "A4", null, "A4", null, "G4", "G4", null, "G4", null, "G4", null, null], "16n");
 
 
 document.getElementById("playButton").addEventListener("click", () => {
@@ -114,7 +95,9 @@ document.getElementById("playButton").addEventListener("click", () => {
     drumPatternIntro.start(0);
     bassLine.start(0);
     arpSequence.start(0); // Start the arpeggio sequence
-    mainRiffSequence.start(0);
+    //mainRiffSequence.start(0);
+    mainRiffH.start(0);
+    mainRiffL.start(0);
     Tone.Transport.start()
 });
 
