@@ -127,7 +127,7 @@ document.getElementById("playButton").addEventListener("click", () => {
     mainRiffH.stop("56m");
     mainRiffL.stop("56m");
 
-    arpSequence.stop("64m");
+    arpSequence.stop("60m");
 
     Tone.Transport.start()
 });
