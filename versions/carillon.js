@@ -121,6 +121,14 @@ document.getElementById("playButton").addEventListener("click", () => {
     drumPatternFinal.start("32m");
     arpSequence.start("32m");
 
+    drumPatternFinal.stop("48m");
+    bassLine.stop("48m");
+
+    mainRiffH.stop("56m");
+    mainRiffL.stop("56m");
+
+    arpSequence.stop("60m");
+
     Tone.Transport.start()
 });
 
