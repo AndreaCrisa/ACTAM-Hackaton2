@@ -28,6 +28,12 @@
     background-color: grey;
 }
 
+.sadMsg {
+    margin: auto;
+    font-size: 80px;
+    color: red;
+}
+
 img{
     width: 30%;
     margin: auto;
