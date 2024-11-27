@@ -24,7 +24,7 @@ const bassSynth = new Tone.AMSynth().toDestination();
 bassSynth.set({
     pitchDecay: 0.05,
     octaves: 2,
-    volume: 5,
+    volume: 10,
 });
 
 // Sidechain compression setup for a "pumping" effect
@@ -36,11 +36,11 @@ const compressor = new Tone.Compressor({
     release: 0.2,
 }).toDestination();
 
-//bassSynth.connect(compressor);
+bassSynth.connect(compressor);
 
 const bassLine = new Tone.Sequence((time, note) => {
     bassSynth.triggerAttackRelease(note, "8n", time);
-}, ["G1", "F1", "Eb1", "Eb1", "Eb1", "F1", "C1", "C1", "C1", "D1", "Eb1", "Eb1", "Eb1", "F1", "G1", "G1"], "4n");
+}, ["G2", "F2", "Eb2", "Eb2", "Eb2", "F2", "C2", "C2", "C2", "D2", "Eb2", "Eb2", "Eb2", "F2", "G2", "G2"], "4n");
 
 
 
@@ -63,6 +63,7 @@ const arp = [
 // Create a polyphonic synth for the arpeggio
 const arpSynth = new Tone.PolySynth(Tone.Synth).toDestination();
 
+
 // Function to play the arpeggio
 function playArpeggio(arpStructure, noteDuration) {
 
@@ -77,11 +78,43 @@ function playArpeggio(arpStructure, noteDuration) {
 const arpSequence = playArpeggio(arp, "16n");
 
 
+// Creazione di un sintetizzatore per l'arpeggio
+const mainRiffSynth = new Tone.PolySynth(Tone.Synth).toDestination();
+
+mainRiffSynth.set({
+    oscillator: {
+        type: "sawtooth" // Change oscillator type to sawtooth
+    }
+});
+
+// Sequenza dell'arpeggio con pause
+const mainRiffSequence = new Tone.Sequence((time, chord) => {
+    if (chord) {
+        mainRiffSynth.triggerAttackRelease(chord, time); // Suona l'accordo con una durata di 16esima
+    }
+}, [
+    ["G4", "Bb4"], "16n",  // G5, Bb5 (16n)
+    null, "16n",            // Pausa di 16n
+    ["G4", "Bb4"], "16n",  // G5, Bb5 (16n)
+    null, "16n",            // Pausa di 16n
+    ["F4", "A4"], "16n",   // F5, A5 (16n)
+    null, "16n",            // Pausa di 16n
+    ["F4", "A4"], "16n",   // F5, A5 (16n)
+    null, "16n",            // Pausa di 16n
+    ["D4", "G4"], "8n",    // D5, G5 (8n)
+    null, "16n",            // Pausa di 16n
+    ["D4", "G4"], "16n",   // D5, G5 (16n)
+    null, "16n",            // Pausa di 16n
+    ["D4", "G4"], "8n"     // D5, G5 (8n)
+], "16n");  // La durata è impostata per ogni step come "16n" (sedicesima)
+
+
 document.getElementById("playButton").addEventListener("click", () => {
     Tone.start();
     drumPatternIntro.start(0);
     bassLine.start(0);
     arpSequence.start(0); // Start the arpeggio sequence
+    mainRiffSequence.start(0);
     Tone.Transport.start()
 });
 
