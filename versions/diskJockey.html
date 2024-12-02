@@ -3,14 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DiskJockey Version</title>
-    <link rel="stylesheet" href="../app.css">
+    <title>DiscJokey Pjanoo</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: #111;
+            color: #fff;
+        }
+        .controls {
+            margin: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        input[type="range"] {
+            width: 200px;
+        }
+        .slider-group {
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
-    <div class="menu">
-        <div class="title">DiskJockey Version</div>
-        <div class="sadMsg">Not enough time :(</div>
-        <img src="../images/zeb-zeb89.gif">
+    <h1>DiscJokey: Pjanoo Recreation</h1>
+    <div>
+        <button id="playButton">Start</button>
+        <button id="stopButton">Stop</button>
     </div>
+    <div class="controls">
+        <div class="slider-group">
+            <label for="bpm">BPM: </label>
+            <input type="range" id="bpm" min="60" max="200" value="126">
+            <span id="bpmValue">126</span>
+        </div>
+        <div>
+            <label>
+                <input type="checkbox" id="toggleKick" checked>
+                Enable Kick
+            </label>
+            <label>
+                <input type="checkbox" id="toggleSnare" checked>
+                Enable Snare
+            </label>
+            <label>
+                <input type="checkbox" id="toggleHiHat" checked>
+                Enable Hi-Hat
+            </label>
+        </div>
+        <div>
+            <label>
+                <input type="checkbox" id="toggleBass" checked>
+                Enable Bassline
+            </label>
+            <label>
+                <input type="checkbox" id="toggleArp" checked>
+                Enable Arpeggio
+            </label>
+            <label>
+                <input type="checkbox" id="toggleRiff" checked>
+                Enable Main Riff
+            </label>
+        </div>
+    </div>
+    <script>
+        // Setup Tone.js
+        Tone.Transport.bpm.value = 126;
+        Tone.Transport.timeSignature = [4, 4];
+
+        // Drum players
+        const kick = new Tone.Player("../DrumSamples/BD.wav").toDestination();
+        const snare = new Tone.Player("../DrumSamples/SNARE.wav").toDestination();
+        const ClosedHiHat = new Tone.Player("../DrumSamples/CHH.wav").toDestination();
+
+        const drumPatternIntro = new Tone.Sequence((time, note) => {
+            if (document.getElementById("toggleKick").checked && note === "kick") {
+                kick.start(time);
+            }
+            if (document.getElementById("toggleSnare").checked && note === "snare") {
+                snare.start(time);
+            }
+            if (document.getElementById("toggleHiHat").checked && note === "ClosedHiHat") {
+                ClosedHiHat.start(time);
+            }
+        }, ["kick", "ClosedHiHat", "snare", "ClosedHiHat"], "8n");
+
+        // Bassline setup
+        const bassSynth = new Tone.AMSynth().toDestination();
+        const bassLine = new Tone.Sequence((time, note) => {
+            if (document.getElementById("toggleBass").checked) {
+                bassSynth.triggerAttackRelease(note, "8n", time);
+            }
+        }, ["G2", "F2", "Eb2", "C2", "D2", "Eb2", "F2", "G2"], "4n");
+
+        // Arpeggio setup
+        const arpSynth = new Tone.PolySynth(Tone.Synth).toDestination();
+        const arpSequence = new Tone.Sequence((time, note) => {
+            if (document.getElementById("toggleArp").checked) {
+                arpSynth.triggerAttackRelease(note, "16n", time);
+            }
+        }, [
+            "C4", "D4", "F4", "C4", "D4", "F4", "C4", "D4", "G4"
+        ], "16n");
+
+        // Main riff
+        const mainRiffSynth = new Tone.PolySynth(Tone.Synth).toDestination();
+        const mainRiffL = new Tone.Sequence((time, note) => {
+            if (document.getElementById("toggleRiff").checked) {
+                mainRiffSynth.triggerAttackRelease(note, "16n", time);
+            }
+        }, ["G4", "F4", "D4", "D4"], "16n");
+
+        const mainRiffH = new Tone.Sequence((time, note) => {
+            if (document.getElementById("toggleRiff").checked) {
+                mainRiffSynth.triggerAttackRelease(note, "16n", time);
+            }
+        }, ["Bb4", "A4", "G4", "G4"], "16n");
+
+        // Start/stop buttons
+        document.getElementById("playButton").addEventListener("click", async () => {
+            await Tone.start();
+            drumPatternIntro.start(0);
+            bassLine.start(0);
+            arpSequence.start(0);
+            mainRiffL.start(0);
+            mainRiffH.start(0);
+            Tone.Transport.start();
+        });
+
+        document.getElementById("stopButton").addEventListener("click", () => {
+            Tone.Transport.stop();
+            drumPatternIntro.stop(0);
+            bassLine.stop(0);
+            arpSequence.stop(0);
+            mainRiffL.stop(0);
+            mainRiffH.stop(0);
+        });
+
+        // BPM control
+        const bpmSlider = document.getElementById("bpm");
+        const bpmValue = document.getElementById("bpmValue");
+        bpmSlider.addEventListener("input", () => {
+            const bpm = bpmSlider.value;
+            bpmValue.textContent = bpm;
+            Tone.Transport.bpm.value = bpm;
+        });
+    </script>
 </body>
 </html>
