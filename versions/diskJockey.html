@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DiscJokey Pjanoo</title>
+    <title>DiscJokey Enhanced</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
     <style>
         body {
@@ -21,65 +21,105 @@
             font-size: 16px;
             cursor: pointer;
         }
+        .slider-group {
+            margin-bottom: 20px;
+        }
         input[type="range"] {
             width: 200px;
         }
-        .slider-group {
-            margin-bottom: 20px;
+        .effect-controls {
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <h1>DiscJokey: Pjanoo Recreation</h1>
+    <h1>DiscJokey: Enhanced Pjanoo Recreation</h1>
     <div>
         <button id="playButton">Start</button>
         <button id="stopButton">Stop</button>
     </div>
     <div class="controls">
-        <div class="slider-group">
-            <label for="bpm">BPM: </label>
-            <input type="range" id="bpm" min="60" max="200" value="126">
-            <span id="bpmValue">126</span>
-        </div>
+        <h3>Drum Controls</h3>
         <div>
             <label>
                 <input type="checkbox" id="toggleKick" checked>
                 Enable Kick
             </label>
+            <input type="range" id="kickVolume" min="-60" max="0" value="-6"> Volume
+        </div>
+        <div>
             <label>
                 <input type="checkbox" id="toggleSnare" checked>
                 Enable Snare
             </label>
+            <input type="range" id="snareVolume" min="-60" max="0" value="-6"> Volume
+        </div>
+        <div>
             <label>
                 <input type="checkbox" id="toggleHiHat" checked>
                 Enable Hi-Hat
             </label>
+            <input type="range" id="hihatVolume" min="-60" max="0" value="-6"> Volume
         </div>
+        <h3>Synth Controls</h3>
         <div>
             <label>
                 <input type="checkbox" id="toggleBass" checked>
                 Enable Bassline
             </label>
+            <input type="range" id="bassVolume" min="-60" max="0" value="-6"> Volume
+        </div>
+        <div>
             <label>
                 <input type="checkbox" id="toggleArp" checked>
                 Enable Arpeggio
             </label>
+            <input type="range" id="arpVolume" min="-60" max="0" value="-6"> Volume
+        </div>
+        <div>
             <label>
                 <input type="checkbox" id="toggleRiff" checked>
                 Enable Main Riff
             </label>
+            <input type="range" id="riffVolume" min="-60" max="0" value="-6"> Volume
+        </div>
+    </div>
+    <div class="effect-controls">
+        <h3>Global Effects</h3>
+        <div>
+            <label for="reverb">Reverb: </label>
+            <input type="range" id="reverb" min="0" max="1" step="0.1" value="0.5">
+        </div>
+        <div>
+            <label for="lowPassFilter">Low-Pass Filter (Hz): </label>
+            <input type="range" id="lowPassFilter" min="200" max="20000" value="20000">
         </div>
     </div>
     <script>
-        // Setup Tone.js
+        // Tone.js setup
         Tone.Transport.bpm.value = 126;
-        Tone.Transport.timeSignature = [4, 4];
 
-        // Drum players
-        const kick = new Tone.Player("../DrumSamples/BD.wav").toDestination();
-        const snare = new Tone.Player("../DrumSamples/SNARE.wav").toDestination();
-        const ClosedHiHat = new Tone.Player("../DrumSamples/CHH.wav").toDestination();
+        // Effects
+        const reverb = new Tone.Reverb({ decay: 3, wet: 0.5 }).toDestination();
+        const lowPassFilter = new Tone.Filter(20000, "lowpass").connect(reverb);
 
+        // Helper to create volume and effects chains
+        const createChannel = (volume = -6) => {
+            const gain = new Tone.Volume(volume).connect(lowPassFilter);
+            return gain;
+        };
+
+        // Drum players with volume control
+        const kickChannel = createChannel();
+        const kick = new Tone.Player("../DrumSamples/BD.wav").connect(kickChannel);
+
+        const snareChannel = createChannel();
+        const snare = new Tone.Player("../DrumSamples/SNARE.wav").connect(snareChannel);
+
+        const hiHatChannel = createChannel();
+        const ClosedHiHat = new Tone.Player("../DrumSamples/CHH.wav").connect(hiHatChannel);
+
+        // Drum pattern
         const drumPatternIntro = new Tone.Sequence((time, note) => {
             if (document.getElementById("toggleKick").checked && note === "kick") {
                 kick.start(time);
@@ -92,46 +132,40 @@
             }
         }, ["kick", "ClosedHiHat", "snare", "ClosedHiHat"], "8n");
 
-        // Bassline setup
-        const bassSynth = new Tone.AMSynth().toDestination();
+        // Bassline
+        const bassChannel = createChannel();
+        const bassSynth = new Tone.AMSynth().connect(bassChannel);
         const bassLine = new Tone.Sequence((time, note) => {
             if (document.getElementById("toggleBass").checked) {
                 bassSynth.triggerAttackRelease(note, "8n", time);
             }
-        }, ["G2", "F2", "Eb2", "C2", "D2", "Eb2", "F2", "G2"], "4n");
+        }, ["G2", "F2", "Eb2", "C2"], "4n");
 
-        // Arpeggio setup
-        const arpSynth = new Tone.PolySynth(Tone.Synth).toDestination();
+        // Arpeggio
+        const arpChannel = createChannel();
+        const arpSynth = new Tone.PolySynth(Tone.Synth).connect(arpChannel);
         const arpSequence = new Tone.Sequence((time, note) => {
             if (document.getElementById("toggleArp").checked) {
                 arpSynth.triggerAttackRelease(note, "16n", time);
             }
-        }, [
-            "C4", "D4", "F4", "C4", "D4", "F4", "C4", "D4", "G4"
-        ], "16n");
+        }, ["C4", "D4", "F4", "C4"], "16n");
 
         // Main riff
-        const mainRiffSynth = new Tone.PolySynth(Tone.Synth).toDestination();
+        const riffChannel = createChannel();
+        const mainRiffSynth = new Tone.PolySynth(Tone.Synth).connect(riffChannel);
         const mainRiffL = new Tone.Sequence((time, note) => {
             if (document.getElementById("toggleRiff").checked) {
                 mainRiffSynth.triggerAttackRelease(note, "16n", time);
             }
-        }, ["G4", "F4", "D4", "D4"], "16n");
+        }, ["G4", "F4", "D4"], "16n");
 
-        const mainRiffH = new Tone.Sequence((time, note) => {
-            if (document.getElementById("toggleRiff").checked) {
-                mainRiffSynth.triggerAttackRelease(note, "16n", time);
-            }
-        }, ["Bb4", "A4", "G4", "G4"], "16n");
-
-        // Start/stop buttons
+        // Play/Stop controls
         document.getElementById("playButton").addEventListener("click", async () => {
             await Tone.start();
             drumPatternIntro.start(0);
             bassLine.start(0);
             arpSequence.start(0);
             mainRiffL.start(0);
-            mainRiffH.start(0);
             Tone.Transport.start();
         });
 
@@ -141,16 +175,34 @@
             bassLine.stop(0);
             arpSequence.stop(0);
             mainRiffL.stop(0);
-            mainRiffH.stop(0);
         });
 
-        // BPM control
-        const bpmSlider = document.getElementById("bpm");
-        const bpmValue = document.getElementById("bpmValue");
-        bpmSlider.addEventListener("input", () => {
-            const bpm = bpmSlider.value;
-            bpmValue.textContent = bpm;
-            Tone.Transport.bpm.value = bpm;
+        // Volume controls
+        document.getElementById("kickVolume").addEventListener("input", (e) => {
+            kickChannel.volume.value = e.target.value;
+        });
+        document.getElementById("snareVolume").addEventListener("input", (e) => {
+            snareChannel.volume.value = e.target.value;
+        });
+        document.getElementById("hihatVolume").addEventListener("input", (e) => {
+            hiHatChannel.volume.value = e.target.value;
+        });
+        document.getElementById("bassVolume").addEventListener("input", (e) => {
+            bassChannel.volume.value = e.target.value;
+        });
+        document.getElementById("arpVolume").addEventListener("input", (e) => {
+            arpChannel.volume.value = e.target.value;
+        });
+        document.getElementById("riffVolume").addEventListener("input", (e) => {
+            riffChannel.volume.value = e.target.value;
+        });
+
+        // Effect controls
+        document.getElementById("reverb").addEventListener("input", (e) => {
+            reverb.wet.value = e.target.value;
+        });
+        document.getElementById("lowPassFilter").addEventListener("input", (e) => {
+            lowPassFilter.frequency.value = e.target.value;
         });
     </script>
 </body>
