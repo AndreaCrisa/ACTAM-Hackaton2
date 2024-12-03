@@ -8,8 +8,8 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background: #111;
-            color: #fff;
+            background: white;
+            color: black;
         }
         .controls {
             margin: 20px;
@@ -29,6 +29,30 @@
         .effect-controls {
             margin-top: 20px;
         }
+
+        .editor, .editorItem{
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .editor {
+            gap: 20px;
+            border: 2px solid red;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 50%;
+        }
+
+        .editorList{
+            display: flex;
+            flex-direction: row;
+        }
+
+        img {
+            margin-top: 20px;
+            width: 50%;
+        }
     </style>
 </head>
 <body>
@@ -39,66 +63,123 @@
     </div>
     <div class="controls">
         <h3>Element Controls</h3>
-        <div>
-            <h4>Kick</h4>
-            <label>
-                <input type="checkbox" id="toggleKick" checked>
-                Enable Kick
-            </label>
-            <input type="range" id="kickVolume" min="-60" max="0" value="-6"> Volume
-            <input type="range" id="kickReverb" min="0" max="1" step="0.1" value="0.5"> Reverb
-            <input type="range" id="kickFilter" min="200" max="20000" value="20000"> Filter (Hz)
+        <div class="editorList">
+            <div class="editor">
+                <h4>Kick</h4>
+                <div class="editorItem">
+                    <div class="editorItemLabel">Enable Kick</div>
+                    <input type="checkbox" id="toggleKick" checked>
+                </div>
+                <div class="editorItem">
+                    <div class="editorItemLabel">Volume</div>
+                    <input type="range" id="kickVolume" min="-60" max="0" value="-6">
+                </div>
+                <div class="editorItem">
+                    <div class="editorItemLabel">Reverb</div>
+                    <input type="range" id="kickReverb" min="0" max="1" step="0.1" value="0.5">
+                </div>
+                <div class="editorItem">
+                    <div class="editorItemLabel">Filter (Hz)</div>
+                    <input type="range" id="kickFilter" min="200" max="20000" value="20000">
+                </div>
+            </div>
+            <div class="editor">
+                <h4>Snare</h4>
+                <div class="editorItem">
+                    <div class="editorItemLabel">Enable Snare</div>
+                    <input type="checkbox" id="toggleSnare" checked>
+                </div>
+                <div class="editorItem">
+                    <div class="editorItemLabel">Volume</div>
+                    <input type="range" id="snareVolume" min="-60" max="0" value="-6">
+                </div>
+                <div class="editorItem">
+                    <div class="editorItemLabel">Reverb</div>
+                    <input type="range" id="snareReverb" min="0" max="1" step="0.1" value="0.5">
+                </div>
+                <div class="editorItem">
+                    <div class="editorItemLabel">Filter (Hz)</div>
+                    <input type="range" id="snareFilter" min="200" max="20000" value="20000">
+                </div>
+            </div>
+            <div class="editor">
+                <h4>Hi-Hat</h4>
+                <div class="editorItem">
+                    <div class="editorItemLabel">Enable Hi-Hat</div>
+                    <input type="checkbox" id="toggleHiHat" checked>
+                </div>
+                <div class="editorItem">
+                    <div class="editorItemLabel">Volume</div>
+                    <input type="range" id="hiHatVolume" min="-60" max="0" value="-6">
+                </div>
+                <div class="editorItem">
+                    <div class="editorItemLabel">Reverb</div>
+                    <input type="range" id="hiHatReverb" min="0" max="1" step="0.1" value="0.5">
+                </div>
+                <div class="editorItem">
+                    <div class="editorItemLabel">Filter (Hz)</div>
+                    <input type="range" id="hiHatFilter" min="200" max="20000" value="20000">
+                </div>
+            </div>
+            <div class="editor">
+                <h4>Bassline</h4>
+                <div class="editorItem">
+                    <div class="editorItemLabel">Enable Bassline</div>
+                    <input type="checkbox" id="toggleBass" checked>
+                </div>
+                <div class="editorItem">
+                    <div class="editorItemLabel">Volume</div>
+                    <input type="range" id="bassVolume" min="-60" max="0" value="-6">
+                </div>
+                <div class="editorItem">
+                    <div class="editorItemLabel">Reverb</div>
+                    <input type="range" id="bassReverb" min="0" max="1" step="0.1" value="0.5">
+                </div>
+                <div class="editorItem">
+                    <div class="editorItemLabel">Filter (Hz)</div>
+                    <input type="range" id="bassFilter" min="200" max="20000" value="20000">
+                </div>
+            </div>
+            <div class="editor">
+                <h4>Arpeggio</h4>
+                <div class="editorItem">
+                    <div class="editorItemLabel">Enable Arpeggio</div>
+                    <input type="checkbox" id="toggleArp" checked>
+                </div>
+                <div class="editorItem">
+                    <div class="editorItemLabel">Volume</div>
+                    <input type="range" id="arpVolume" min="-60" max="0" value="-6">
+                </div>
+                <div class="editorItem">
+                    <div class="editorItemLabel">Reverb</div>
+                    <input type="range" id="arpReverb" min="0" max="1" step="0.1" value="0.5">
+                </div>
+                <div class="editorItem">
+                    <div class="editorItemLabel">Filter (Hz)</div>
+                    <input type="range" id="arpFilter" min="200" max="20000" value="20000">
+                </div>
+            </div>
+            <div class="editor">
+                <h4>Main Riff</h4>
+                <div class="editorItem">
+                    <div class="editorItemLabel">Enable Main Riff</div>
+                    <input type="checkbox" id="toggleRiff" checked>
+                </div>
+                <div class="editorItem">
+                    <div class="editorItemLabel">Volume</div>
+                    <input type="range" id="riffVolume" min="-60" max="0" value="-6">
+                </div>
+                <div class="editorItem">
+                    <div class="editorItemLabel">Reverb</div>
+                    <input type="range" id="riffReverb" min="0" max="1" step="0.1" value="0.5">
+                </div>
+                <div class="editorItem">
+                    <div class="editorItemLabel">Filter (Hz)</div>
+                    <input type="range" id="riffFilter" min="200" max="20000" value="20000">
+                </div>
+            </div>
         </div>
-        <div>
-            <h4>Snare</h4>
-            <label>
-                <input type="checkbox" id="toggleSnare" checked>
-                Enable Snare
-            </label>
-            <input type="range" id="snareVolume" min="-60" max="0" value="-6"> Volume
-            <input type="range" id="snareReverb" min="0" max="1" step="0.1" value="0.5"> Reverb
-            <input type="range" id="snareFilter" min="200" max="20000" value="20000"> Filter (Hz)
-        </div>
-        <div>
-            <h4>Hi-Hat</h4>
-            <label>
-                <input type="checkbox" id="toggleHiHat" checked>
-                Enable Hi-Hat
-            </label>
-            <input type="range" id="hiHatVolume" min="-60" max="0" value="-6"> Volume
-            <input type="range" id="hiHatReverb" min="0" max="1" step="0.1" value="0.5"> Reverb
-            <input type="range" id="hiHatFilter" min="200" max="20000" value="20000"> Filter (Hz)
-        </div>
-        <div>
-            <h4>Bassline</h4>
-            <label>
-                <input type="checkbox" id="toggleBass" checked>
-                Enable Bassline
-            </label>
-            <input type="range" id="bassVolume" min="-60" max="0" value="-6"> Volume
-            <input type="range" id="bassReverb" min="0" max="1" step="0.1" value="0.5"> Reverb
-            <input type="range" id="bassFilter" min="200" max="20000" value="20000"> Filter (Hz)
-        </div>
-        <div>
-            <h4>Arpeggio</h4>
-            <label>
-                <input type="checkbox" id="toggleArp" checked>
-                Enable Arpeggio
-            </label>
-            <input type="range" id="arpVolume" min="-60" max="0" value="-6"> Volume
-            <input type="range" id="arpReverb" min="0" max="1" step="0.1" value="0.5"> Reverb
-            <input type="range" id="arpFilter" min="200" max="20000" value="20000"> Filter (Hz)
-        </div>
-        <div>
-            <h4>Main Riff</h4>
-            <label>
-                <input type="checkbox" id="toggleRiff" checked>
-                Enable Main Riff
-            </label>
-            <input type="range" id="riffVolume" min="-60" max="0" value="-6"> Volume
-            <input type="range" id="riffReverb" min="0" max="1" step="0.1" value="0.5"> Reverb
-            <input type="range" id="riffFilter" min="200" max="20000" value="20000"> Filter (Hz)
-        </div>
+        <img src="../images/zeb89-dying.gif">
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
     <script src="./diskJockey.js"></script>

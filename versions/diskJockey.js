@@ -112,5 +112,10 @@ document.getElementById("playButton").addEventListener("click", () => {
 
 document.getElementById("stopButton").addEventListener("click", () => {
     Tone.Transport.stop();
+    drumPatternIntro.stop(0);
+    bassLine.stop(0);
+    arpSequence.stop(0);
+    mainRiffL.stop(0);
+    mainRiffH.stop(0);
     Tone.Transport.cancel();
 });
