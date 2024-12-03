@@ -53,6 +53,33 @@
             margin-top: 20px;
             width: 50%;
         }
+
+        .toggleButton{
+            background-color: #4A4A4A;
+            width: 40px;
+            height: 40px;
+            border-radius: 100%;
+            margin: 20px auto;
+            border: 3px solid black;
+            cursor: pointer;
+            background-image: url("../images/power-button.svg");
+            background-position: center;
+            background-size: 50%;
+            background-repeat: no-repeat;
+        }
+
+        .toggleButton:hover{
+            background-color: #AAAAAAAA;
+            
+        }
+
+        .activeToggle{
+            background-color: red;
+        }
+
+        .activeToggle:hover{
+            background-color: rgb(196, 79, 43);
+        }
     </style>
 </head>
 <body>
@@ -68,7 +95,7 @@
                 <h4>Kick</h4>
                 <div class="editorItem">
                     <div class="editorItemLabel">Enable Kick</div>
-                    <input type="checkbox" id="toggleKick" checked>
+                    <div class="toggleButton activeToggle" id="toggleKick"></div>
                 </div>
                 <div class="editorItem">
                     <div class="editorItemLabel">Volume</div>
@@ -87,7 +114,7 @@
                 <h4>Snare</h4>
                 <div class="editorItem">
                     <div class="editorItemLabel">Enable Snare</div>
-                    <input type="checkbox" id="toggleSnare" checked>
+                    <div class="toggleButton activeToggle" id="toggleSnare"></div>
                 </div>
                 <div class="editorItem">
                     <div class="editorItemLabel">Volume</div>
@@ -106,7 +133,7 @@
                 <h4>Hi-Hat</h4>
                 <div class="editorItem">
                     <div class="editorItemLabel">Enable Hi-Hat</div>
-                    <input type="checkbox" id="toggleHiHat" checked>
+                    <div class="toggleButton activeToggle" id="toggleHiHat"></div>
                 </div>
                 <div class="editorItem">
                     <div class="editorItemLabel">Volume</div>
@@ -125,7 +152,7 @@
                 <h4>Bassline</h4>
                 <div class="editorItem">
                     <div class="editorItemLabel">Enable Bassline</div>
-                    <input type="checkbox" id="toggleBass" checked>
+                    <div class="toggleButton activeToggle" id="toggleBass"></div>
                 </div>
                 <div class="editorItem">
                     <div class="editorItemLabel">Volume</div>
@@ -144,7 +171,7 @@
                 <h4>Arpeggio</h4>
                 <div class="editorItem">
                     <div class="editorItemLabel">Enable Arpeggio</div>
-                    <input type="checkbox" id="toggleArp" checked>
+                    <div class="toggleButton activeToggle" id="toggleArp"></div>
                 </div>
                 <div class="editorItem">
                     <div class="editorItemLabel">Volume</div>
@@ -163,7 +190,7 @@
                 <h4>Main Riff</h4>
                 <div class="editorItem">
                     <div class="editorItemLabel">Enable Main Riff</div>
-                    <input type="checkbox" id="toggleRiff" checked>
+                    <div class="toggleButton activeToggle" id="toggleRiff"></div>
                 </div>
                 <div class="editorItem">
                     <div class="editorItemLabel">Volume</div>

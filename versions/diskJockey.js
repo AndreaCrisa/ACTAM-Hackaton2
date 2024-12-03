@@ -26,29 +26,55 @@ const arpSynth = new Tone.PolySynth(Tone.Synth).connect(arpChannel.gain);
 const riffChannel = createChannelWithEffects();
 const mainRiffSynth = new Tone.PolySynth(Tone.Synth).connect(riffChannel.gain);
 
+let elementsIDMapping = {
+    0: "kick",
+    1: "snare",
+    2: "hiHat",
+    3: "bass",
+    4: "arp",
+    5: "riff",
+}
+
+let elementsStatus = {
+    "kick": true,
+    "snare": true,
+    "hiHat": true,
+    "bass": true,
+    "arp": true,
+    "riff": true,
+}
+
+
+Array.from(document.getElementsByClassName("toggleButton")).forEach((item, index) => {
+    item.addEventListener("click", () => {
+        item.classList.toggle("activeToggle", !elementsStatus[elementsIDMapping[index]])
+        elementsStatus[elementsIDMapping[index]] = !elementsStatus[elementsIDMapping[index]]
+    })
+})
+
 // Drum pattern
 const drumPatternIntro = new Tone.Sequence((time, note) => {
-    if (document.getElementById("toggleKick").checked && note === "kick") {
+    if (elementsStatus["kick"] && note === "kick") {
         kick.start(time);
     }
-    if (document.getElementById("toggleSnare").checked && note === "snare") {
+    if (elementsStatus["snare"] && note === "snare") {
         snare.start(time);
     }
-    if (document.getElementById("toggleHiHat").checked && note === "ClosedHiHat") {
+    if (elementsStatus["hiHat"] && note === "ClosedHiHat") {
         ClosedHiHat.start(time);
     }
 }, ["kick", "ClosedHiHat", "snare", "ClosedHiHat"], "8n");
 
 // Bassline
 const bassLine = new Tone.Sequence((time, note) => {
-    if (document.getElementById("toggleBass").checked) {
+    if (elementsStatus["bass"]) {
         bassSynth.triggerAttackRelease(note, "8n", time);
     }
 }, ["G2", "F2", "Eb2", "Eb2", "Eb2", "F2", "C2", "C2", "C2", "D2", "Eb2", "Eb2", "Eb2", "F2", "G2", "G2"], "4n");
 
 // Arpeggio
 const arpSequence = new Tone.Sequence((time, note) => {
-    if (document.getElementById("toggleArp").checked) {
+    if (elementsStatus["arp"]) {
         arpSynth.triggerAttackRelease(note, "16n", time);
     }
 }, ["C4", "D4", "F4", "C4", "D4", "F4",
@@ -66,13 +92,13 @@ const arpSequence = new Tone.Sequence((time, note) => {
 
 // Main riff
 const mainRiffL = new Tone.Sequence((time, note) => {
-    if (document.getElementById("toggleRiff").checked) {
+    if (elementsStatus["riff"]) {
         mainRiffSynth.triggerAttackRelease(note, "16n", time);
     }
 }, ["G4", null, "G4", null, "F4", null, "F4", null, "D4", "D4", null, "D4", null, "D4", null, null], "16n");
 
 const mainRiffH = new Tone.Sequence((time, note) => {
-    if (document.getElementById("toggleRiff").checked) {
+    if (elementsStatus["riff"]) {
         mainRiffSynth.triggerAttackRelease(note, "16n", time);
     }
 }, ["Bb4", null, "Bb4", null, "A4", null, "A4", null, "G4", "G4", null, "G4", null, "G4", null, null], "16n");
