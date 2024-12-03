@@ -56,8 +56,8 @@
 
         .toggleButton{
             background-color: #4A4A4A;
-            width: 40px;
-            height: 40px;
+            width: 60px;
+            height: 60px;
             border-radius: 100%;
             margin: 20px auto;
             border: 3px solid black;
@@ -80,6 +80,37 @@
         .activeToggle:hover{
             background-color: rgb(196, 79, 43);
         }
+
+        .alternateModeButton, .distancer{
+            border-radius: 14px;
+            border: 3px solid black;
+            background-color: rgb(19, 155, 19);
+            color: black;
+            padding: 15px;
+            cursor: pointer;
+            width: 150px;
+            height: 20px;
+            font-size: 20px;
+            line-height: 20px;
+        }
+
+        .distancer{
+            background-color: white;
+            border-color: white;
+            cursor: auto;
+        }
+
+        .alternateModeButton:hover{
+            background-color: rgb(0, 100, 62);
+        }
+
+        .activeAlternateModeButton{
+            background-color: greenyellow;
+        }
+
+        .activeAlternateModeButton:hover{
+            background-color: rgb(47, 255, 57);
+        }
     </style>
 </head>
 <body>
@@ -96,6 +127,7 @@
                 <div class="editorItem">
                     <div class="editorItemLabel">Enable Kick</div>
                     <div class="toggleButton activeToggle" id="toggleKick"></div>
+                    <div class="distancer"></div>
                 </div>
                 <div class="editorItem">
                     <div class="editorItemLabel">Volume</div>
@@ -115,6 +147,7 @@
                 <div class="editorItem">
                     <div class="editorItemLabel">Enable Snare</div>
                     <div class="toggleButton activeToggle" id="toggleSnare"></div>
+                    <div class="alternateModeButton" id="toggleClap">CLAP</div>
                 </div>
                 <div class="editorItem">
                     <div class="editorItemLabel">Volume</div>
@@ -134,6 +167,7 @@
                 <div class="editorItem">
                     <div class="editorItemLabel">Enable Hi-Hat</div>
                     <div class="toggleButton activeToggle" id="toggleHiHat"></div>
+                    <div class="alternateModeButton" id="toggleOpenHiHat">OPEN HI HAT</div>
                 </div>
                 <div class="editorItem">
                     <div class="editorItemLabel">Volume</div>
@@ -153,6 +187,7 @@
                 <div class="editorItem">
                     <div class="editorItemLabel">Enable Bassline</div>
                     <div class="toggleButton activeToggle" id="toggleBass"></div>
+                    <div class="distancer"></div>
                 </div>
                 <div class="editorItem">
                     <div class="editorItemLabel">Volume</div>
@@ -172,6 +207,7 @@
                 <div class="editorItem">
                     <div class="editorItemLabel">Enable Arpeggio</div>
                     <div class="toggleButton activeToggle" id="toggleArp"></div>
+                    <div class="distancer"></div>
                 </div>
                 <div class="editorItem">
                     <div class="editorItemLabel">Volume</div>
@@ -191,6 +227,7 @@
                 <div class="editorItem">
                     <div class="editorItemLabel">Enable Main Riff</div>
                     <div class="toggleButton activeToggle" id="toggleRiff"></div>
+                    <div class="distancer"></div>
                 </div>
                 <div class="editorItem">
                     <div class="editorItemLabel">Volume</div>

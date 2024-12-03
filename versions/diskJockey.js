@@ -11,11 +11,13 @@ const createChannelWithEffects = (volume = -6) => {
 const kickChannel = createChannelWithEffects();
 const kick = new Tone.Player("../DrumSamples/BD.wav").connect(kickChannel.gain);
 
-const snareChannel = createChannelWithEffects();
-const snare = new Tone.Player("../DrumSamples/SNARE.wav").connect(snareChannel.gain);
+const snareClapChannel = createChannelWithEffects();
+const snare = new Tone.Player("../DrumSamples/SNARE.wav").connect(snareClapChannel.gain);
+const clap = new Tone.Player("../DrumSamples/CLAP.wav").connect(snareClapChannel.gain);
 
 const hiHatChannel = createChannelWithEffects();
-const ClosedHiHat = new Tone.Player("../DrumSamples/CHH.wav").connect(hiHatChannel.gain);
+const closedHiHat = new Tone.Player("../DrumSamples/CHH.wav").connect(hiHatChannel.gain);
+const openHiHat = new Tone.Player("../DrumSamples/OHH.wav").connect(hiHatChannel.gain);
 
 const bassChannel = createChannelWithEffects();
 const bassSynth = new Tone.AMSynth().connect(bassChannel.gain);
@@ -44,6 +46,8 @@ let elementsStatus = {
     "riff": true,
 }
 
+let enableClap = false;
+let enableOpenHiHat = false;
 
 Array.from(document.getElementsByClassName("toggleButton")).forEach((item, index) => {
     item.addEventListener("click", () => {
@@ -52,16 +56,37 @@ Array.from(document.getElementsByClassName("toggleButton")).forEach((item, index
     })
 })
 
+let toggleClap = document.getElementById("toggleClap") 
+
+toggleClap.addEventListener("click", () => {
+    enableClap = !enableClap
+    toggleClap.classList.toggle("activeAlternateModeButton", enableClap)
+})
+
+
+let toggleOHH = document.getElementById("toggleOpenHiHat") 
+
+toggleOHH.addEventListener("click", () => {
+    enableOpenHiHat = !enableOpenHiHat
+    toggleOHH.classList.toggle("activeAlternateModeButton", enableOpenHiHat)
+})
+
 // Drum pattern
 const drumPatternIntro = new Tone.Sequence((time, note) => {
     if (elementsStatus["kick"] && note === "kick") {
         kick.start(time);
     }
     if (elementsStatus["snare"] && note === "snare") {
-        snare.start(time);
+        if(enableClap)
+            clap.start(time);
+        else
+            snare.start(time);
     }
     if (elementsStatus["hiHat"] && note === "ClosedHiHat") {
-        ClosedHiHat.start(time);
+        if(enableOpenHiHat)
+            openHiHat.start(time);
+        else
+            closedHiHat.start(time);
     }
 }, ["kick", "ClosedHiHat", "snare", "ClosedHiHat"], "8n");
 
@@ -119,7 +144,7 @@ function updateControl(channel, volumeId, reverbId, filterId) {
 
 // Attach controls
 updateControl(kickChannel, "kickVolume", "kickReverb", "kickFilter");
-updateControl(snareChannel, "snareVolume", "snareReverb", "snareFilter");
+updateControl(snareClapChannel, "snareVolume", "snareReverb", "snareFilter");
 updateControl(hiHatChannel, "hiHatVolume", "hiHatReverb", "hiHatFilter");
 updateControl(bassChannel, "bassVolume", "bassReverb", "bassFilter");
 updateControl(arpChannel, "arpVolume", "arpReverb", "arpFilter");
